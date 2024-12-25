@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        table {
+            width: 50%;
+            margin: auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .passed {
+            color: green;
+        }
+        .failed {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Checklist Dashboard</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Rule</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="checklist-results">
+        </tbody>
+    </table>
+    <script>
+        async function fetchChecklistResults() {
+            const response = await fetch('/api/checklist');
+            const results = await response.json();
+            const tbody = document.getElementById('checklist-results');
+            results.forEach(result => {
+                const tr = document.createElement('tr');
+                const tdName = document.createElement('td');
+                tdName.textContent = result.name;
+                const tdStatus = document.createElement('td');
+                tdStatus.textContent = result.status;
+                tdStatus.className = result.status.toLowerCase();
+                tr.appendChild(tdName);
+                tr.appendChild(tdStatus);
+                tbody.appendChild(tr);
+            });
+        }
+
+        fetchChecklistResults();
+    </script>
+</body>
+</html>
